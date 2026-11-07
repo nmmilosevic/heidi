@@ -1,0 +1,8 @@
+# originals (optimised WebP copies are committed)
+site/assets/img/raw/
+# scraped source pages
+_scrape/
+# local tooling
+.claude/
+.DS_Store
+__pycache__/
