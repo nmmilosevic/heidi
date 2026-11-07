@@ -86,6 +86,19 @@
     }).filter(Boolean);
     darkHero = $('[data-header="light"]');
   }
+  /* Header contrast: look at what is actually behind the header and pick white or ink.
+     Samples three points across the bar; dark surfaces = .dark sections and full-bleed photo heroes. */
+  const DARK = '.dark, .hero, .proj-hero, .band, .next';
+  function isDarkBehindHeader() {
+    const yProbe = Math.round(header.offsetHeight / 2);
+    let dark = 0;
+    for (const x of [innerWidth * 0.12, innerWidth * 0.5, innerWidth * 0.88]) {
+      const el = document.elementsFromPoint(x, yProbe).find((n) => !n.closest('.header, .menu, .progress, .lightbox'));
+      if (el && el.closest(DARK)) dark++;
+    }
+    return dark >= 2;
+  }
+
   function tick() {
     const y = window.scrollY, vh = innerHeight;
     parallax.forEach(({ el, speed }) => {
@@ -102,9 +115,7 @@
     const max = document.documentElement.scrollHeight - vh;
     progress && (progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`);
     if (header && !html.classList.contains('is-menu-open')) {
-      const overDark = darkHero && y < darkHero.offsetHeight - 80;
-      header.classList.toggle('is-light', !!overDark);
-      header.classList.toggle('is-solid', !overDark && y > 40);
+      header.classList.toggle('is-light', isDarkBehindHeader());
       if (y > 400 && y > lastY + 4) header.classList.add('is-hidden');
       else if (y < lastY - 4 || y < 400) header.classList.remove('is-hidden');
     }

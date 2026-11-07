@@ -629,3 +629,8 @@ blockquote { margin: 0; }
 
 /* Linked image frames must be blocks so aspect-ratio, the reveal cover and zoom apply to the right box */
 a.media { display: block; }
+
+/* Header: no backdrop — text switches between ink and white based on what sits behind it (see app.js) */
+.header::before { display: none; }
+.header, .header.is-solid { color: var(--c-ink); transition: transform .7s var(--ease-out), color .35s ease; }
+.header.is-light { color: #fff; }
